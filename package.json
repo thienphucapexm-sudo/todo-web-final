@@ -1,0 +1,33 @@
+{
+  "name": "todo-web-final",
+  "version": "1.0.0",
+  "description": "Du an web HTML CSS JS demo hoc Test AI & CI/CD",
+  "keywords": [
+    "web",
+    "demo",
+    "ai",
+    "ci",
+    "cd"
+  ],
+  "homepage": "https://github.com/thienphucapexm-sudo/todo-web-final#readme",
+  "bugs": {
+    "url": "https://github.com/thienphucapexm-sudo/todo-web-final/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thienphucapexm-sudo/todo-web-final.git"
+  },
+  "license": "MIT",
+  "author": "thienphuc",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@vitest/coverage-v8": "^4.1.7",
+    "http-server": "^14.1.1",
+    "vitest": "^4.1.7"
+  }
+}
