@@ -9,7 +9,7 @@
 </head>
 <body>
     <h1>DANG NHAP</h1>
-    <form method="post" action="xulydangnhap.php" class="tencua-botrangdiem">
+    <form id = "form-login" method="post" action="xulydangnhap.php" class="tencua-botrangdiem">
         <label>Email</label>
         <input type="email" id="email-input" />
         <br />
@@ -30,7 +30,7 @@
             var email = document.getElementById("email-input").value;
             var password = document.getElementById("password-input").value;
             // goi ham xu li 
-            var thongbao = login(email,password);
+            var thongbao = login(email, password);
             alert(thongbao);
 
         });
