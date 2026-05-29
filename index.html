@@ -5,7 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRANG WEB TODO</title>
     <link type="text/css" href="styles/main.css" rel="stylesheet"/>
-    <script src="src/loginStore.js"></script>
+    <script type="module" src="src/loginStore.js"></script>
+    <style>
+        #login-message{
+            color: red;
+            font-size: 20px;
+            border: 1px dashed black;
+        }
+    </style>
 </head>
 <body>
     <h1>DANG NHAP</h1>
@@ -19,8 +26,10 @@
         <br />
 
         <button type="submit" id="login-button" class="form-dep" data-testid="login-submit">Đăng nhập</button>
+        <div id="login-message">abc</div>
     </form>
     <script>
+        
         // tim ptu co id form-login
         const loginForm = document.getElementById("form-login");
         // dangki su kien "submit"
@@ -31,7 +40,8 @@
             var password = document.getElementById("password-input").value;
             // goi ham xu li 
             var thongbao = login(email, password);
-            alert(thongbao);
+            //alert(thongbao);
+            document.getElementById('login-message').innerHTML = thongbao;
 
         });
     </script>

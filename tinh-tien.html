@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính Tiền</title>
+    <script type="module" src="src/discountStore.js"></script> 
+</head>
+<body>
+    <h1>Tính tiền sau giảm giá</h1>
+    <form>
+        <label >Giá gốc (vnd)</label>
+        <input type="number" name="" id="numSoTien"/> <br/>
+
+        <label >Giảm giá (%)</label>
+        <input type="number" id="numPhanTram"> <br/>
+
+        <button type="button" id="btnTinhTien">Tính Tiền</button>
+
+        <div id="ketqua"></div>
+    </form>
+    <script>
+        const btnTinhTien = document.getElementById('btnTinhTien'); // lay phan tu id = btn... , co id khong can dau #
+        btnTinhTien.addEventListener('click', (e)=>{ // lang nghe su kien 
+            // 1. thu thap thong tin tu giaodien 
+            var sotien = document.getElementById('numSoTien').value; // co the .with de lay chieu rong....
+            var phantram = document.getElementById('numPhanTram').value; // co the .with de lay chieu rong....
+            
+            // 2.tinh tien 
+            //var ketqua = sotien / phantram; // cach nay rat kho test unit , co the tao 1 ham tinh tien..
+            var ketqua = tinhTienGiamGia(sotien,phantram);
+
+            // 3.in ket qua vao div ma id=ketqua
+            document.getElementById('ketqua').innerHTML = ketqua; // tim div id va in ketqua
+        })
+
+    
+    </script>
+</body>
+</html>

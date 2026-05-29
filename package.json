@@ -22,7 +22,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:unit": "vitest run tests/unit",
+    "test:e2e": "playwright test --ui",
+    "test:e2e:report": "playwright show-report"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
