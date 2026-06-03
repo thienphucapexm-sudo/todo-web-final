@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tinh tien dien</title>
+    <script type="module" src="src/tinhtiendien.js"></script>
+</head>
+
+<body>
+    <h1>Tính tiền điện</h1>
+
+    <form id="frmCalculation"> 
+        <label for="">Số kwh đã sử dụng</label>
+        <input type="number" id="kwh-input" />
+
+        <button type="submit" id="calculate-button">Tính tiền</button>
+
+        <div id="calculation-message"></div>
+    </form>
+
+    <script>
+        const frmCalculation = document.getElementById('frmCalculation');
+
+        frmCalculation.addEventListener("submit",(event)=>{
+            // yeu cau chan lai khoan hay gui , lang nghe submit
+            event.preventDefault(); // ngan chan su kien submit cua html form
+            // 1. thu thap thong tin nguoi dung , tim ptu co id 
+            const soKwh = document.getElementById('kwh-input').value; // lay ra gia tri thoi
+            // 2. chi goi ham tinh toan (business)
+            var ketqua = tinhTienDien(soKwh);
+            // 3. hien thi ket qua ra vung thong bao 
+            document.getElementById('calculation-message').innerHTML = ketqua;
+        
+        });
+    </script>
+</body>
+</html>
