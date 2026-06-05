@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách người dùng</title>
+    <script type = "module" src="src/userStore.js"></script>
+</head>
+<body>
+    <h1>Danh sách người dùng</h1>
+    <form id="frmUsers">
+        <label >Địa chỉ API URL:</label>
+        <input type="text" id="api-url" value="https://jsonplaceholder.typicode.com/users"/>
+        <button type="submit" id="fetch-button">Lấy dữ liệu</button> 
+        <div id="result"></div>
+    </form>
+
+    <script>
+        const frmUsers = document.getElementById('frmUsers'); // lay phan tu cua from User
+        frmUsers.addEventListener('submit',async (event)=>{ // dang ki lang nghe su kien
+            event.preventDefault(); // ngan chan su kien submit lai
+            // https://jsonplaceholder.typicode.com/users api co san tren trang web 
+            const resultDiv = document.getElementById('result');
+
+            // 1. thu thap thong tin nguoi dung 
+            const apiUrl = document.getElementById('api-url').value; // chi quan tam lay value , thay vi chieu dai , rong....
+            
+            // 2. goi ham xu ly api , bat buoc try catch phong truong hop error throw
+            try {
+                const html  = await loadUsers(apiUrl); // goi ham async thi phai co await , goi ham ben file Store
+
+                //console.log('data >>> ',data); // in data ra trong f12 de kiem tra ten bien 
+
+                // 5. in ra man hinh trong div result 
+                resultDiv.innerHTML = html;
+            }catch(error){
+                // hien thi loi ra neu co 
+                resultDiv.innerHTML = error;
+            }
+        });
+    </script>
+
+    
+</body>
+</html>
+
