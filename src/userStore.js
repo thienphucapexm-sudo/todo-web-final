@@ -51,6 +51,8 @@ export function validateUsers(data){
     if(!isValid){ // neu khong hop le 
         return "data cua phan tu khong dung cau truc quy dinh";
     }
+
+    return "data ok"; // co the tao 1 file hang so ...  MSG_OK
 }
 
 // HAM BUSINESS 
@@ -62,9 +64,11 @@ export async function loadUsers(apiUrl){
     console.log('data >>> ',data); // in data ra trong f12 de kiem tra ten bien 
     // 2. kiem tra 
     const error = validateUsers(data);
-    if(error !="" && error !=undefined){ // hoac la if(error) tuc la file no ton tai
+    if(error !="data ok" && error !=undefined){ // hoac la if(error) tuc la file no ton tai
         return error;
-    }
+    } // cho nay chu y data ok thi chay tiep
+
+
     // 3. xu ly trinh dien dang LIST 
     var html = '<ul>'; // mo the va dong the
     data.forEach(user => { // ham duyet array
