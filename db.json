@@ -1,0 +1,37 @@
+{
+  "todos": [
+    {
+      "title": "Hoc 12345",
+      "conpleted": false,
+      "id": "IEy7GpxRELs",
+      "completed": true
+    },
+    {
+      "title": "hoc api",
+      "conpleted": false,
+      "id": "xyJC0pnqQus",
+      "completed": false
+    },
+    {
+      "title": "Hoc 123456",
+      "completed": false,
+      "id": "6lAjlwSteCk"
+    },
+    {
+      "title": "sasasasa",
+      "completed": false,
+      "id": "0BzPfT-YVV4"
+    },
+    {
+      "title": "oei",
+      "completed": false,
+      "id": "3psQPcc2K6s"
+    },
+    {
+      "title": "hihi",
+      "completed": true,
+      "id": "JgsZI6uHvhU"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

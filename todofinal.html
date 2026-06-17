@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách việc cần làm</title>
+    <style>
+        .section-them-cong-viec { border: 1px solid red; padding: 10px;}
+        .section-danh-sach-cong-viec { border: 1px solid blue; padding: 10px; margin-top: 20px; }
+    </style>
+</head>
+
+<body>
+    <h1>Danh sách việc cần làm</h1>
+
+    <section class = "section-them-cong-viec">
+        <h2>Thêm công việc</h2>
+        <form id="todo-form">
+            <label>Tên công việc:</label>
+            <input type="text" id="todo-title-input" /><br />
+            <button type="submit" id="add-todo-button">Thêm công việc</button>
+        </form>
+        <div id="todo-msg"></div>
+    </section>
+
+    
+    <section class="section-danh-sach-cong-viec">
+        <h2> Danh sách công việc </h2>
+        <ul id='todo-list'>
+            <li>
+                <input type="checkbox" id="chk1" /> <span> Tên công việc </span>
+                <button type="button" id="edit-button">➖ Sửa</button>
+                <button type="submit" id="delete-button1">❌Xóa</button>
+            </li>
+        </ul>
+    </section>
+          
+    <script type="module">
+        import { loadTodos, addTodo } from './src/todoStore.js';
+
+        const API_URL = 'http://localhost:3000/todos';
+
+        async function renderTodos() {
+            const html = await loadTodos(API_URL);
+            document.getElementById('todo-list').innerHTML = html;
+        }
+
+        await renderTodos();
+
+        const todoForm = document.getElementById('todo-form');
+        todoForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const titleTuNguoiDung = document.getElementById('todo-title-input').value.trim();
+            if (!titleTuNguoiDung) {
+                document.getElementById('todo-msg').innerHTML = '<b>Vui lòng nhập tên công việc.</b>';
+                return;
+            }
+
+            const savedTodo = await addTodo(API_URL, titleTuNguoiDung);
+            document.getElementById('todo-msg').innerHTML = `Đã thêm công việc ${savedTodo.id} thành công!`;
+            todoForm.reset();
+            await renderTodos();
+        });
+
+        // // Hàm load dữ liệu: Gọi API và render giao diện
+        // async function loadTodos() {
+        //     const response = await fetch('http://localhost:3000/todos');
+        //     if (!response.ok) {
+        //         document.getElementById('todo-list').innerHTML = '<li>Không load được dữ liệu...</li>';
+        //         return;
+        //     }
+        //     const data = await response.json();
+        //     console.log(data);
+        //     var html = '';
+        //     data.forEach(job => {
+        //         html += '<li>';
+        //         html += `<input type="checkbox" id="chk${job.id}" ${job.completed ? 'checked' : ''} /> <span>${job.title}</span>`;
+        //         html += `<button type="button" id="edit-button${job.id}">➖ Sửa</button>`;
+        //         html += `<button type="button" id="delete-button${job.id}">❌Xóa</button>`;
+        //         html += '</li>';
+        //     });
+
+        //     document.getElementById('todo-list').innerHTML = html;
+        //     // đăng ký sự kiện click cho từng nút
+        //     data.forEach(job => {
+        //         // tìm nút xóa
+        //         const deleteButton = document.getElementById(`delete-button${job.id}`);
+        //         deleteButton?.addEventListener('click', async () => {
+        //             // alert
+        //             const confirmed = confirm('Bạn có chắc chắn muốn xóa không?');
+        //             if (!confirmed) {
+        //                 return;
+        //             }
+        //             // gởi request đến server
+        //             const deleteResponse = await fetch(`http://localhost:3000/todos/${job.id}`, {
+        //                 method: 'DELETE'
+        //             });
+        //             if (!deleteResponse.ok) {
+        //                 document.getElementById('todo-msg').innerHTML = '<b>Có lỗi xảy ra, không xóa được.</b>';
+        //                 return;
+        //             }
+        //             document.getElementById('todo-msg').innerHTML = `Đã xóa ${job.id} thành công!`;
+        //             loadTodos();
+        //         });
+        //         // tìm nút sửa
+        //         const editButton = document.getElementById(`edit-button${job.id}`);
+        //         editButton.addEventListener('click', async () => {
+        //             const newTitle = prompt('Sửa tên công việc', job.title);
+        //             if (newTitle === null || newTitle.trim() === '') {
+        //                 return;
+        //             }
+        //             // chuẩn bị dữ liệu gởi đi
+        //             const payload = {
+        //                 title: newTitle.trim(),
+        //             };
+        //             // Gởi request PATCH đến server
+        //             const response = await fetch(`http://localhost:3000/todos/${job.id}`, {
+        //                 method: 'PATCH',
+        //                 headers: {
+        //                     'Content-Type': 'application/json'
+        //                 },
+        //                 body: JSON.stringify(payload)
+        //             });
+
+        //             if (!response.ok) {
+        //                 document.getElementById('todo-msg').innerHTML = '<b>Không cập nhật được.</b>';
+        //                 return;
+        //             }
+
+        //             document.getElementById('todo-msg').innerHTML = `<b>Đã cập nhật job ${job.id} thành công!</b>`;
+        //             loadTodos();
+        //         });
+        //     });
+        // }
+
+        // // Gọi hàm
+       
+
+        // >>>>>DELETE CLICK 
+        // dang ki su kien click cho cac phan tu co class btn-delete
+        // id thi chi co 1 phan tu , con class thi chua duoc nhieu id 
+
+        const lstDeleteButtons = document.querySelectorAll('.btn-delete'); // tra ve dang list dung ham nay 
+        // class btn-delete nam trong html va file store 
+        // duyet qua tung id trong class 
+        lstDeleteButtons.forEach((btn)=>{
+            // lang nghe 
+            btn.addEventListener("click", async (event)=>{
+                // thu alert truoc 
+                
+
+                const id = btn.dataset.id; // cach lay id cua danh sach 
+                //alert('da click nut xoa '+ id);
+
+
+                const ok = confirm(`ban co muon xoa ${id} khong`);
+                if(!ok){
+                    return; 
+                } // neu khong ok thi thoi , neu da ok thi chay tiep
+                const deletedJob = await deleteTodo(API_URL,id);
+                
+                document.getElementById('todo-msg').innerHTML = `<b>Đã xóa ${deletedJob.id} thành công!</b>`;
+
+            });
+
+        });// btn la ten bien tu dat ten
+        
+        
+        // >>>>EDIT CLICK 
+        // tim tren trang cai html co class btn-edit
+        const lstEditButtons = document.querySelectorAll(".btn-edit");
+        lstEditButtons.forEach((btn) =>{
+            const id = btn.dataset.id;
+            const title = btn.dataset.title;
+
+            // co the lang nghe su kien double click cung duoc
+            btn.addEventListener("click" ,async (event)=>{
+                // hien ra 1 cai nhap lieu 
+                const newTitle = prompt("sua ten cong viec", title); // luu vao bien newtitle
+                // goi ham sua 
+                const updatedJob = await updateTodo(API_URL,id,newTitle);
+
+                document.getElementById('todo-msg').innerHTML = `<b>Đã sua ${updatedJob.id} thành công!</b>`;
+
+            });
+        });
+
+        // DANG KI SU KIEN CHECKBOX
+        const lstCheckboxes = document.querySelectorAll(".todo-checkbox");
+        lstCheckboxes.forEach((chk)=>{
+            const id = chk.dataset.id;
+            chk.addEventListener("change" ,async (event)=>{
+                var isCompleted = event.target.checked;
+                // goi ham cap nhat trang thai completed
+                const updatedJob= await updateTodoStatus(API_URL,id,isCompleted);
+                document.getElementById('todo-msg').innerHTML = `<b>Đã cap nhat ${updatedJob.id} thành công!</b>`;
+            });
+
+        });
+
+    </script>
+</body>
+</html>

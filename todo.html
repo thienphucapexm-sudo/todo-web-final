@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách việc cần làm</title>
+
+    <style>
+        .section-them-cong-viec{ border: 1px solid red; padding: 10px;}
+        .section-danh-sach-cong-viec{ border: 1px solid blue; padding: 10px; margin-top: 20px;}
+        .div-ket-qua-phan-hoi{border: 1px solid green; padding: 10px; margin-top: 10px;}
+    </style>
+</head>
+<body>
+    <h1>Danh sách việc cần làm</h1>
+    
+    <section class="section-them-cong-viec">
+        <h2>Thêm công việc</h2>
+        <form id="todo-form">
+            <label>Tên công việc</label>
+            <input type="text" id="todo-title-input" />
+            
+
+            <button type="submit" id="add-todo-button">Thêm công việc</button>
+        </form>
+
+        <div id="todo-msg" class="div-ket-qua-phan-hoi">Kết quả phản hồi... </div>
+
+    </section>
+
+    <section class="section-danh-sach-cong-viec">
+        <h2>Danh sách thêm công việc</h2>
+
+        <ul id="todo-list">
+            <li>
+                <input type="checkbox" id="chk1"/>
+                Tên công việc <button type="button" id="edit-button1">✏️ Sửa</button>
+                <button type="button" id="delete-button1">❌ Xóa</button>
+            </li>
+        </ul>
+    </section>
+
+    <script>
+        // dang ki su kien cho cai form submit
+        const  todoForm = document.getElementById('todo-form'); // lay du lieu todoform
+        todoForm.addEventListener('submit', async (event) =>{ // lang nghe formtodo , phai cho async nha
+            event.preventDefault(); // ngan chan gui di 
+            const titleTuNguoiDung = document.getElementById('todo-title-input').value; // lay gia tri input cua form todo
+
+            // truoc khi submit phai dong goi json , json dang co title va completed 
+            // du lieu nhan ve goi la package , gui di goi la payload 
+            const payload = {
+                title: titleTuNguoiDung,
+                conpleted: false
+            }; // van dang la kieu object cua js chua phai la kieu json 
+
+            // goi request POST 
+            // dia chi goi va nhan la chung 1 url backend
+            // theo chuan json , headers viet theo qui tac ben duoi 
+            // body duoc chuyen ve dang json 
+            const response = await fetch('http://localhost:3000/todos', {
+                method: "POST", 
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)   
+            });// goi xong thi phai nhan duoc phan hoi 
+
+            // xu ly phan hoi tra ve , ok thi thoi , neu khong ok thi...
+            if(!response.ok) {
+                document.getElementById('todo-msg').innerHTML = '<b>Khong luu duoc</b>'; // tim div todoMsg inra thong bao
+            }
+
+            const savedTodo = await response.json(); // chuyen ve dang json , phai them await moi thanh cong 
+            document.getElementById('todo-msg').innerHTML = `Da them cong viec ${savedTodo.title} thanh cong !`;
+
+        });
+
+
+
+        // cung la goi den api database , goi database thi la bat dong bo 
+        // ham goi api va render giao dien
+        async function loadTodos(){
+            var response = await fetch('http://localhost:3000/todos');
+            
+            if(!response.ok){
+                document.getElementById('todo-list').innerHTML = '<li>khong load duoc data...</li>'
+            }
+
+            // lay du lieu ve kieu json 
+            var data = await response.json(); // khong await la tra ve loi hua do nha
+            console.log('data>>> ',data);
+
+
+            var html = ''; // tao 1 html rong
+            data.forEach(job =>{ // in data ra bang the <li> , job la ten bien vua moi dat
+                html += '<li>';
+                html += `<input type="checkbox" id="chk${job.id}" /><span>${job.title} </span>`;
+                html += `<button type="button" id="edit-button${job.id}">✏️ Sửa</button>`;
+                html += `<button type="button" id="delete-button${job.id}">❌ Xóa</button>`;
+                html += '</li>';
+            }); // viet nhu vay la chay duoc , chu y dau `` thay vi ""
+
+            document.getElementById('todo-list').innerHTML = html; // in danh sach ra , the ul todo-list bay gio = html
+            
+            // dang ki su kien click cho tung button 
+            // ve ra html xong roi moi dang ki duoc nha 
+            data.forEach(job => {
+                const deleteButton = document.getElementById(`delete-button${job.id}`); //lay data nut delete
+                // dung den api phai co bat dong bo nha 
+                deleteButton.addEventListener('click' , async ()=> {
+                    //alert(`da click nut ${job.title}`);
+                    // lang nghe su kien click , alert de kiem tra click chua 
+
+                    // phai nhac lai truoc khi xoa
+                    const confirmed = confirm("ban co chac chan muon xoa khong ?");
+                    if(!confirmed){
+                        return; 
+                    }
+
+                    // goi request den server DELETE
+                    const response = await fetch(`http://localhost:3000/todos/${job.id}`, {
+                        method: 'DELETE'
+                    });
+                    if(!response.ok){
+                        document.getElementById('todo-msg').innerHTML = '<b>khong xoa duoc</b>';
+                        return;
+                    }
+                    document.getElementById('todo-msg').innerHTML = `<b>da xoa ${job.title} thanh cong</b>`
+
+                });
+            });
+        
+        
+        } // khai bao ham thi phai goi ham moi chay nha ^^
+
+
+        // goi ham 
+        loadTodos(); 
+
+        
+
+
+    </script>
+</body>
+</html>
