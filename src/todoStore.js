@@ -40,6 +40,7 @@ export async function addTodo(apiUrl, newTitle) {
         },
         body: JSON.stringify(payload)
     });
+    //console.log(">>>>> response : ",response);
     if(!response.ok) {
         throw new Error("Err002: Không kết nối được dữ liệu");
 
